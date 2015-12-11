@@ -3,4 +3,7 @@ API	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## A
 Contributing	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## Contributing$/;"	function	line:9
 License	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## License$/;"	function	line:13
 let.errorMessage	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/settings.js	/^let settings = {$/;"	property	line:1
-module.exports.configure	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/index.js	/^module.exports = {$/;"	property	line:4
+renderSafeComponentError	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^        Component.prototype.renderSafeComponentError = function () {$/;"	function	line:7
+Component	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^    if (!Component.prototype.renderSafeComponentError) {$/;"	class	line:6
+Component.renderSafeComponentError	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^        Component.prototype.renderSafeComponentError = function () {$/;"	method	line:7
+Component	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^        }$/;"	function	line:17
