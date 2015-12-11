@@ -1,9 +1,11 @@
-Welcome to react-safe-component	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## Welcome to react-safe-component$/;"	function	line:1
-API	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## API$/;"	function	line:5
-Contributing	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## Contributing$/;"	function	line:9
-License	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## License$/;"	function	line:13
 let.errorMessage	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/settings.js	/^let settings = {$/;"	property	line:1
-renderSafeComponentError	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^        Component.prototype.renderSafeComponentError = function () {$/;"	function	line:7
-Component	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^    if (!Component.prototype.renderSafeComponentError) {$/;"	class	line:6
-Component.renderSafeComponentError	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^        Component.prototype.renderSafeComponentError = function () {$/;"	method	line:7
-Component	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^        }$/;"	function	line:17
+renderSafeComponentError	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^        Component.prototype.renderSafeComponentError = function () {$/;"	function	line:8
+Component	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^    if (!Component.prototype.renderSafeComponentError) {$/;"	class	line:7
+Component.renderSafeComponentError	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^        Component.prototype.renderSafeComponentError = function () {$/;"	method	line:8
+Component	/Users/tysoncadenhead/Sites/opensource/react-safe-component/src/wrap.js	/^        }$/;"	function	line:18
+Welcome to react-safe-component	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## Welcome to react-safe-component$/;"	function	line:1
+Installation	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## Installation$/;"	function	line:5
+Usage	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## Usage$/;"	function	line:9
+Debugging errors	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## Debugging errors$/;"	function	line:61
+Contributing	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## Contributing$/;"	function	line:67
+License	/Users/tysoncadenhead/Sites/opensource/react-safe-component/README.md	/^## License$/;"	function	line:71

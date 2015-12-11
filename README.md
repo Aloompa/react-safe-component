@@ -1,10 +1,68 @@
 ## Welcome to react-safe-component
 
-A starter place for nice React modules.
+React is very unforgiving about errors occurring on the lifecycle methods. You may find that your app totally crashes and you are unable to navigate to new routes. That's where safe component comes in. Just wrap your uninstantiated component and we will catch and log any errors so your app keeps working even when there is a bug.
 
-## API
+## Installation
 
-Coming soon.
+`npm install react-safe-component`
+
+## Usage
+
+Just wrap your uninstantiated class in a safeComponent function, and any of your lifecycle methods can throw errors without crashing your app.
+
+```
+const React = require('react');
+const safeComponent = require('react-safe-component');
+
+class MyAwesomeComponent extends React.Component {
+
+    componentWillMount () {
+        throw new Error('Oh no! My componentWillMount method broke. I guess my app will totally crash now...'');
+    }
+
+    render () {
+        return (
+            <div>What? How am I still rendering? Is it magic?</div>
+        );
+    }
+
+}
+
+module.exports = safeComponent(MyAwesomeComponent);
+```
+
+The render() method is sort of a special animal because it expects there to be an output to render. By default, we return an error message, but you can customize it using the `renderSafeComponentError()` method on your component.
+
+```
+const React = require('react');
+const safeComponent = require('react-safe-component');
+
+class MyAwesomeComponent extends React.Component {
+
+    renderSafeComponentError () {
+        return (
+            <div>Failure</div>
+        );
+    }
+
+    render () {
+        throw new Error('Dangit');
+
+        return (
+            <div>Success</div>
+        );
+    }
+
+}
+
+module.exports = safeComponent(MyAwesomeComponent);
+```
+
+## Debugging errors
+
+Since the errors get caught, the only way to see them is to turn on debugging. This can be done by adding a setting to your localStorage:
+
+`localStorage.debug = 'react-safe-component';`
 
 ## Contributing
 

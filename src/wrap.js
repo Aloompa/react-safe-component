@@ -1,5 +1,6 @@
 const React = require('react');
 const lifeCycleMethods = require('./lifeCycleMethods');
+const debug = require('debug')('react-safe-component');
 
 const wrap = (Component) => {
 
@@ -21,6 +22,8 @@ const wrap = (Component) => {
                 return originalMethod.apply(this, arguments);
 
             } catch (e) {
+                debug(e);
+
                 if (methodName === 'render') {
                     return React.createElement('div', {
                         className: 'react__safecomponent-error'
