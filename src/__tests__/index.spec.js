@@ -7,6 +7,25 @@ const ReactTestUtils = require('react-addons-test-utils');
 class EmptyMockComponent extends React.Component {}
 class GoodMockComponent extends React.Component {}
 class BadMockComponent extends React.Component {}
+class ContextComponent extends React.Component {
+
+    componentWillMount () {
+        return this.isInContext();
+    }
+
+    isInContext () {
+        return 'yes';
+    }
+
+    renderSafeComponentError () {
+        return 'very yes';
+    }
+
+    render () {
+        throw new Error('Oops!');
+    }
+
+}
 
 lifeCycleMethods.forEach((methodName) => {
     GoodMockComponent.prototype[methodName] = (first, second) => {
@@ -19,6 +38,7 @@ lifeCycleMethods.forEach((methodName) => {
 });
 
 describe('The react-safe-component Test Suite', () => {
+
     lifeCycleMethods.forEach((methodName) => {
         describe(`When we get wrap the ${methodName}() method`, () => {
             it('Should instantiate with the original arguments', () => {
@@ -85,6 +105,22 @@ describe('The react-safe-component Test Suite', () => {
                     assert.equal(props.children, 'Custom Error!');
                 });
             }
+        });
+
+        describe('When we check the context of a method', () => {
+            it('Should be in the original context', () => {
+                const Component = wrap(ContextComponent);
+                const component = new Component();
+
+                assert.equal(component.componentWillMount(), 'yes');
+            });
+
+            it('Should render the error method in the original context', () => {
+                const Component = wrap(ContextComponent);
+                const component = new Component();
+
+                assert.equal(component.render().props.children, 'very yes');
+            });
         });
     });
 });

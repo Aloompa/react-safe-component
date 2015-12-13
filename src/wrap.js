@@ -27,7 +27,7 @@ const wrap = (Component) => {
                 if (methodName === 'render') {
                     return React.createElement('div', {
                         className: 'react__safecomponent-error'
-                    }, Component.prototype.renderSafeComponentError());
+                    }, Component.prototype.renderSafeComponentError.call(this));
                 }
 
                 if (methodName === 'shouldComponentUpdate') {
