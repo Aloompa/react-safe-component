@@ -1,126 +1,126 @@
-const wrap = require('../index');
-const lifeCycleMethods = require('../lifeCycleMethods');
-const assert = require('assert');
-const React = require('react');
-const ReactTestUtils = require('react-addons-test-utils');
+/* eslint-disable react/prefer-stateless-function,react/no-multi-comp,no-undef */
+import assert from 'assert';
+import React from 'react';
+import ShallowRenderer from 'react-test-renderer/shallow';
+import TestRenderer from 'react-test-renderer';
+import lifeCycleMethods from '../lifeCycleMethods';
+import wrap from '../index';
+import { ErrorMessage } from '../components';
+
+function FunctionalComponent() {
+  throw new Error('Oops!');
+}
 
 class EmptyMockComponent extends React.Component {}
 class GoodMockComponent extends React.Component {}
 class BadMockComponent extends React.Component {}
+// eslint-disable-next-line react/require-render-return
 class ContextComponent extends React.Component {
+  componentWillMount() {
+    return this.isInContext();
+  }
 
-    componentWillMount () {
-        return this.isInContext();
-    }
+  isInContext() {
+    return 'yes';
+  }
 
-    isInContext () {
-        return 'yes';
-    }
+  renderSafeComponentError() {
+    return 'very yes';
+  }
 
-    renderSafeComponentError () {
-        return 'very yes';
-    }
-
-    render () {
-        throw new Error('Oops!');
-    }
-
+  render() {
+    throw new Error('Oops!');
+  }
 }
 
 lifeCycleMethods.forEach((methodName) => {
-    GoodMockComponent.prototype[methodName] = (first, second) => {
-        return first + second;
-    };
+  GoodMockComponent.prototype[methodName] = (first, second) => first + second;
 
-    BadMockComponent.prototype[methodName] = () => {
-        throw new Error(`${methodName} Error`);
-    };
+  BadMockComponent.prototype[methodName] = () => {
+    throw new Error(`${methodName} Error`);
+  };
 });
 
 describe('The react-safe-component Test Suite', () => {
+  lifeCycleMethods.forEach((methodName) => {
+    describe(`When we get wrap the ${methodName}() method`, () => {
+      it('Should instantiate with the original arguments', () => {
+        const Component = wrap(GoodMockComponent);
+        const component = new Component();
+        const value = component[methodName]('foo', 'bar');
 
-    lifeCycleMethods.forEach((methodName) => {
-        describe(`When we get wrap the ${methodName}() method`, () => {
-            it('Should instantiate with the original arguments', () => {
-                const Component = wrap(GoodMockComponent);
-                const component = new Component();
-                const value = component[methodName]('foo', 'bar');
+        assert.equal(value, 'foobar');
+      });
 
-                assert.equal(value, 'foobar');
-            });
+      it('Should not throw an error if there is one', () => {
+        const Component = wrap(BadMockComponent);
+        const component = new Component();
 
-            it('Should not throw an error if there is one', () => {
-                const Component = wrap(BadMockComponent);
-                const component = new Component();
+        assert.doesNotThrow(component[methodName], Error);
+      });
 
-                assert.doesNotThrow(component[methodName], Error);
-            });
+      it('Should not stub the method if it does not exist', () => {
+        const Component = wrap(EmptyMockComponent);
+        const component = new Component();
 
-            it('Should not stub the method if it does not exist', () => {
-                const Component = wrap(EmptyMockComponent);
-                const component = new Component();
+        assert.ok(!component[methodName]);
+      });
 
-                assert.ok(!component[methodName]);
-            });
+      if (methodName === 'shouldComponentUpdate') {
+        it('Should return a boolean for componentShouldUpdate on error', () => {
+          const Component = wrap(BadMockComponent);
+          const component = new Component();
 
-            if (methodName === 'shouldComponentUpdate') {
-                it('Should return a boolean for componentShouldUpdate on error', () => {
-                    const Component = wrap(BadMockComponent);
-                    const component = new Component();
+          assert.equal(typeof component[methodName](), 'boolean');
+        });
+      }
 
-                    assert.equal(typeof component[methodName](), 'boolean');
-                });
-            }
-
-            if (methodName === 'render') {
-                it('Should return a message wrapped in a react element if there is an error', () => {
-                    const Component = wrap(BadMockComponent);
-                    const renderer = ReactTestUtils.createRenderer();
-
-                    renderer.render(
-                        React.createElement(Component)
-                    );
-
-                    const { props } = renderer.getRenderOutput();
-
-                    assert.equal(props.className, 'react__safecomponent-error');
-                    assert.equal(props.children, 'Oops... an error has occured');
-                });
-
-                it('Should return a custom error', () => {
-                    BadMockComponent.prototype.renderSafeComponentError = () => {
-                        return 'Custom Error!';
-                    };
-
-                    const Component = wrap(BadMockComponent);
-                    const renderer = ReactTestUtils.createRenderer();
-
-                    renderer.render(
-                        React.createElement(Component)
-                    );
-
-                    const { props } = renderer.getRenderOutput();
-
-                    assert.equal(props.className, 'react__safecomponent-error');
-                    assert.equal(props.children, 'Custom Error!');
-                });
-            }
+      if (methodName === 'render') {
+        it('Should return a message wrapped in a react element if there is an error', () => {
+          const Component = wrap(BadMockComponent);
+          const errorMessageElement = new ShallowRenderer().render(<ErrorMessage />);
+          const componentElement = new ShallowRenderer().render(<Component />);
+          assert.deepEqual(errorMessageElement, componentElement.type);
         });
 
-        describe('When we check the context of a method', () => {
-            it('Should be in the original context', () => {
-                const Component = wrap(ContextComponent);
-                const component = new Component();
+        it('Should return a custom error', () => {
+          BadMockComponent.prototype.renderSafeComponentError = () => 'Custom Error!';
 
-                assert.equal(component.componentWillMount(), 'yes');
-            });
+          const Component = wrap(BadMockComponent);
+          const errorMessageElement = new ShallowRenderer()
+            .render(<BadMockComponent.prototype.renderSafeComponentError />);
 
-            it('Should render the error method in the original context', () => {
-                const Component = wrap(ContextComponent);
-                const component = new Component();
+          const componentElement = new ShallowRenderer().render(<Component />);
 
-                assert.equal(component.render().props.children, 'very yes');
-            });
+          assert.deepEqual(errorMessageElement, componentElement.type);
         });
+      }
     });
+
+    describe('When we check the context of a method', () => {
+      it('Should be in the original context', () => {
+        const Component = wrap(ContextComponent);
+        const component = new Component();
+
+        assert.equal(component.componentWillMount(), 'yes');
+      });
+
+      it('Should render the error method in the original context', () => {
+        const Component = wrap(ContextComponent);
+        const component = new Component();
+
+        assert.equal(component.render().type, 'very yes');
+      });
+    });
+  });
+});
+
+describe('When we pass a functional component', () => {
+  it('Should return default ErrorMessage component', () => {
+    const Component = wrap(FunctionalComponent);
+    const componentElement = TestRenderer.create(<Component />);
+    const errorMessageElement = TestRenderer.create(<ErrorMessage />);
+
+    assert.deepEqual(componentElement.toJSON(), errorMessageElement.toJSON());
+  });
 });

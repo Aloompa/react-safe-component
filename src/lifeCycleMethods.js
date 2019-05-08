@@ -1,10 +1,10 @@
-module.exports = [
-    'componentWillMount',
-    'componentDidMount',
-    'componentWillReceiveProps',
-    'shouldComponentUpdate',
-    'componentWillUpdate',
-    'componentDidUpdate',
-    'componentWillUnmount',
-    'render'
+export default [
+  'componentWillMount',
+  'componentDidMount',
+  'componentWillReceiveProps',
+  'shouldComponentUpdate',
+  'componentWillUpdate',
+  'componentDidUpdate',
+  'componentWillUnmount',
+  'render',
 ];
