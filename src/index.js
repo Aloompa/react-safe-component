@@ -1,1 +1,1 @@
-module.exports = require('./wrap');
+export { default } from './wrap';
